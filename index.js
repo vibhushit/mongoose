@@ -9,26 +9,26 @@ connect.then((db) =>{
 
 	console.log('Connected correctly to the server');
 
-	var newDish = Dishes({
+	Dishes.create({
 		name: 'Uthappizza',
 		description: 'Mongoose test'
+	})
+	.then((dish)=>{
+		console.log(dish);
+
+		return Dishes.find({}).exec();
+	})
+	.then((dishes)=>{
+		console.log(dishes);
+
+		return Dishes.deleteMany({});
+	})
+	.then(()=>{
+		console.log('Closing mongoose connection');
+
+		return mongoose.connection.close();
+	})
+	.catch((err) =>{
+		console.log(err);
 	});
-
-	newDish.save()
-		.then((dish)=>{
-			console.log(dish);
-
-			return Dishes.find({});
-		})
-		.then((dishes)=>{
-			console.log(dishes);
-
-			return Dishes.deleteMany({});
-		})
-		.then(()=>{
-			return mongoose.connection.close();
-		})
-		.catch((err) =>{
-			console.log(err);
-		});
 });
